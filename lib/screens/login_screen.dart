@@ -20,6 +20,33 @@ class _LoginScreenState extends State<LoginScreen> {
   SMITrigger? _trigSuccess;
   SMITrigger? _trigFail;
 
+  //1.1 CREAR VARIABLES PARA FOCUSNODE
+  final _emailFocusNode = FocusNode();
+  final _passowrdFocusNode = FocusNode();
+
+  //1.2 LISTENERS (OYENTE/CHISMOSOS)
+
+  @override
+  void initState() {
+    super.initState();
+    _emailFocusNode.addListener(() {
+      if (_emailFocusNode.hasFocus) {
+        //Virificar que no sea nulo
+        if (_isHandsUp != null) {
+          //Manos abajo en el email
+          _isHandsUp!.change(false);
+        }
+      }
+    });
+    _passowrdFocusNode.addListener(() {
+      //Maanos arriba en password
+      _isHandsUp?.change(_passowrdFocusNode.hasFocus);
+    });
+
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     //Para obtener el tamaño de la memoria 
@@ -60,17 +87,19 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 18),
               //CAMPO DE TEXTO EMAIL
               TextField(
+                //1.3 ASIGANASR EL FOCUSNODE AL TEXTFIELD
+                focusNode: _emailFocusNode,
                 onChanged: (value){
                   if (_isHandsUp != null) {
                     //No tapes los ojos al ver email
-                    _isHandsUp!.change(false);
+                    //_isHandsUp!.change(false);
                   }
                   //Si isChecking no es nulo
                   if (_isChecking == null) return;
                   //Activar el modo chismos
                   _isChecking!.change(true);
                 },
-                //Para un tipo de teclado
+                //Para mostrar un tipo de teclado
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: 'Email',
@@ -83,10 +112,12 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 10,),
               //TextFiel de contraseña
               TextField(
+                //1.3 ASIGANASR EL FOCUSNODE AL TEXTFIELD
+                focusNode: _passowrdFocusNode,
                 onChanged: (value){
                   if (_isChecking != null) {
                     //No quiero modo chismo
-                    _isChecking!.change(false);
+                    //_isChecking!.change(false);
                   }
                   //Si isHandsUp no es nulo
                   if (_isHandsUp == null) return;
@@ -121,5 +152,12 @@ class _LoginScreenState extends State<LoginScreen> {
         ))
 
     );
+  }
+  //1.4 LIBERAR MEMORIA RECURSOS/RECURSOS AL SALIR DE LA PANTALLA
+  @override
+  void dispose() {
+    _emailFocusNode.dispose();
+    _passowrdFocusNode.dispose();
+    super.dispose();
   }
 }
