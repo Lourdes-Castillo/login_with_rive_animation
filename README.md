@@ -48,11 +48,12 @@ The core of the project is organized within the `lib` folder as follows:
 ├── pubspec.yaml                  # Dependency and asset management
 └── README.md
 ```
+---
 
 ## 🎬 Demo
 
-> ![Bear Login Demo]( )
-> *Sustituye este enlace por el GIF real de tu aplicación para mostrar al oso en acción.*
+> ![Flutter Demo - Google Chrome 2026-02-22 19-35-35](https://github.com/user-attachments/assets/ba261839-8cc6-4972-b576-c73302ed8cc9)
+
 
 ---
 
@@ -73,4 +74,4 @@ The core of the project is organized within the `lib` folder as follows:
 ## 📜 Credits
 Special thanks to the original creator of the animation asset used in this project:
 
-**Animation:** [Login Machine]([https://rive.app/community/506-953-login-machine/](https://rive.app/marketplace/3645-7621-remix-of-login-machine/)) by **dexterc** via **Rive Community**.
+**Animation:** [Login Machine](https://rive.app/marketplace/3645-7621-remix-of-login-machine/) by **dexterc** via **Rive Community**.
