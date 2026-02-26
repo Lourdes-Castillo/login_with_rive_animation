@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
+import 'dart:async'; //3.1 IMPORTA EL TIEMPO/TIMER
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,9 +21,17 @@ class _LoginScreenState extends State<LoginScreen> {
   SMITrigger? _trigSuccess;
   SMITrigger? _trigFail;
 
+  //2.1 VARIABLE PARA EL RECORRIDO DE LA MIRADA
+  SMINumber? _numLook; 
+
+
   //1.1 CREAR VARIABLES PARA FOCUSNODE
   final _emailFocusNode = FocusNode();
   final _passowrdFocusNode = FocusNode();
+
+  //3.2 TIMER PATA DETENER MIRAD AL DEJAR DE ESCRIBIR
+  Timer? _typingDebounce;
+
 
   //1.2 LISTENERS (OYENTE/CHISMOSOS)
 
@@ -35,6 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
         if (_isHandsUp != null) {
           //Manos abajo en el email
           _isHandsUp!.change(false);
+          //2.2 MIRADA NEUTRAL
+          _numLook?.value = 50.0;
         }
       }
     });
@@ -44,8 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +90,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 _isHandsUp = _controller!.findSMI('isHandsUp');
                 _trigSuccess = _controller!.findSMI('trigSuccess');
                 _trigFail = _controller!.findSMI('trigFail');
+                //2.3 ENLAZAR O VINCULAR numLOOK LA MIRADA
+                _numLook = _controller!.findSMI('numLook');
+
               },
                   ),
                 ),
@@ -98,6 +110,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (_isChecking == null) return;
                   //Activar el modo chismos
                   _isChecking!.change(true);
+                  //2.4 IMPLEMENTAR NUMLOOK
+                  //AJUSTES DE LIMITES DE 0 A 100
+                  //80 COMO MEDIDA DE CALIBRACIÓN
+                  //CLAP MARACA EL RANGO
+                  final look = (value.length/90.0*100.0)
+                  .clamp(0.0, 100.0); //  Clap es el rango (abrazadera)
+                  _numLook?.value = look;
+                  //3.3 DEBOUNCE: SU VUELVE A TECLEAR, REINIIA EL CONTADOR
+                  //CANCELAR CUALQUIEN TIMER EXISTENTE
+                  _typingDebounce?.cancel();
+                  //CREAR NUEVO TIMER
+                  _typingDebounce = Timer(
+                    const Duration(seconds: 2), 
+                    () {
+                      //SI SE CIERRA LA PANTALLA LIBERA EL TIMER
+                      if(!mounted) return;
+                      //MIRA NEUTRA 
+                      _isChecking!.change(false);
+                      });
+            
                 },
                 //Para mostrar un tipo de teclado
                 keyboardType: TextInputType.emailAddress,
@@ -145,8 +177,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 10,),
-              TextField(
-              )
             ],
           ),
         ))
@@ -158,6 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     _emailFocusNode.dispose();
     _passowrdFocusNode.dispose();
+    _typingDebounce?.cancel();
     super.dispose();
   }
 }
