@@ -52,7 +52,8 @@ The core of the project is organized within the `lib` folder as follows:
 
 ## 🎬 Demo
 
-> ![Flutter Demo - Google Chrome 2026-02-22 19-35-35](https://github.com/user-attachments/assets/ba261839-8cc6-4972-b576-c73302ed8cc9)
+> ![Flutter Demo - Google Chrome 2026-02-22 19-35-35](https://github.com/user-attachments/assets/402ed36e-b1ba-42b4-97f3-2cdd2611850d)
+
 
 
 ---
